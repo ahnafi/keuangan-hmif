@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('deposit_penalties', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("deposit_id")->constrained()->cascadeOnDelete();
+            $table->date("date");
+            $table->string("detail");
+            $table->integer("amount");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

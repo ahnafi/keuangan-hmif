@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('cash_fund', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("fund_id")->constrained()->cascadeOnDelete();
+            $table->foreignId("cash_id")->constrained()->cascadeOnDelete();
+            $table->date("date");
+            $table->string("month");
+            $table->integer("penalty");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
