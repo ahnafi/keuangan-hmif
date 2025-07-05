@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\FundController;
 use App\Http\Controllers\TransactionController;
 use App\Models\DivisionCashAccess;
@@ -27,19 +28,8 @@ Route::middleware(["auth", "role:bendahara"])->group(function () {
     Route::resource('fund', FundController::class);
     Route::resource('administrator', AdministratorController::class);
     Route::resource('transaction', TransactionController::class);
+    Route::resource('division', DivisionController::class);
     Route::get("/balance", [BalanceController::class, "index"])->name("balance.index");
-});
-
-Route::get('/test-data', function() {
-    $funds = \App\Models\Fund::all();
-    $transactions = \App\Models\Transaction::with('fund')->get();
-    
-    return response()->json([
-        'funds_count' => $funds->count(),
-        'transactions_count' => $transactions->count(),
-        'funds' => $funds->toArray(),
-        'transactions' => $transactions->toArray()
-    ]);
 });
 
 // route untuk divisi yang mempunyai kas
