@@ -11,6 +11,6 @@ class CashController extends Controller
     {
         $cash = Cash::get();
 
-        return response()->view("pages/home",compact("cash"));
+        return response()->view("pages.home",compact("cash"));
     }
 }
