@@ -7,6 +7,7 @@ use App\Http\Controllers\CashController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\FundController;
 use App\Http\Controllers\TransactionController;
+use App\Models\DivisionCashAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", [CashController::class, "index"])->name("home");
@@ -23,8 +24,11 @@ Route::middleware("auth")->group(function () {
 
 // Routes untuk bendahara
 Route::middleware(["auth", "role:bendahara"])->group(function () {
-    Route::get("/fund", [FundController::class, "index"])->name("fund.index");
-    Route::get("/administrator", [AdministratorController::class, "index"])->name("administrator.index");
+    Route::resource('fund', FundController::class);
+    Route::resource('administrator', AdministratorController::class);
+    Route::resource('transaction', TransactionController::class);
     Route::get("/balance", [BalanceController::class, "index"])->name("balance.index");
-    Route::get("/transaction", [TransactionController::class, "index"])->name("transaction.index");
 });
+
+// route untuk divisi yang mempunyai kas
+// DivisionCashAccess::

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Page Title')
+@section('title', 'Manajemen Transaksi')
 
 @section('content')
     <!-- Table Section -->
@@ -16,34 +16,37 @@
                             class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
                             <div>
                                 <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
-                                    Users
+                                    Manajemen Transaksi
                                 </h2>
                                 <p class="text-sm text-gray-600 dark:text-neutral-400">
-                                    Add users, edit and more.
+                                    Tambah transaksi, edit dan lainnya.
                                 </p>
                             </div>
 
                             <div>
                                 <div class="inline-flex gap-x-2">
-                                    <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-                                        href="#">
-                                        View all
-                                    </a>
-
                                     <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                                        href="#">
+                                        href="{{ route('transaction.create') }}">
                                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
                                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 12h14" />
                                             <path d="M12 5v14" />
                                         </svg>
-                                        Add user
+                                        Tambah Transaksi
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <!-- End Header -->
+
+                        @if(session('success'))
+                            <div class="px-6 py-4">
+                                <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 dark:bg-green-800/10 dark:border-green-900 dark:text-green-500">
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                        @endif
 
                         <!-- Table -->
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
@@ -53,7 +56,7 @@
                                         <div class="flex items-center gap-x-2">
                                             <span
                                                 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Name
+                                                Tanggal
                                             </span>
                                         </div>
                                     </th>
@@ -62,7 +65,7 @@
                                         <div class="flex items-center gap-x-2">
                                             <span
                                                 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Position
+                                                Dana
                                             </span>
                                         </div>
                                     </th>
@@ -71,7 +74,7 @@
                                         <div class="flex items-center gap-x-2">
                                             <span
                                                 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Status
+                                                Keterangan
                                             </span>
                                         </div>
                                     </th>
@@ -80,7 +83,7 @@
                                         <div class="flex items-center gap-x-2">
                                             <span
                                                 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Portfolio
+                                                Jenis
                                             </span>
                                         </div>
                                     </th>
@@ -89,118 +92,95 @@
                                         <div class="flex items-center gap-x-2">
                                             <span
                                                 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Created
+                                                Jumlah
                                             </span>
                                         </div>
                                     </th>
 
-                                    <th scope="col" class="px-6 py-3 text-end"></th>
+                                    <th scope="col" class="px-6 py-3 text-end">Aksi</th>
                                 </tr>
                             </thead>
 
                             <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                <tr>
-                                    <td class="size-px whitespace-nowrap">
-                                        <div class="ps-6 py-3">
-                                            <div class="flex items-center gap-x-3">
-                                                <img class="inline-block size-9.5 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80"
-                                                    alt="Avatar">
-                                                <div class="grow">
-                                                    <span
-                                                        class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">Christina
-                                                        Bersh</span>
-                                                    <span
-                                                        class="block text-sm text-gray-500 dark:text-neutral-500">christina@site.com</span>
-                                                </div>
+                                @forelse($transactions as $transaction)
+                                    <tr>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="ps-6 py-3">
+                                                <span class="text-sm text-gray-800 dark:text-neutral-200">{{ $transaction->date->format('d M Y') }}</span>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="h-px w-72 whitespace-nowrap">
-                                        <div class="px-6 py-3">
-                                            <span
-                                                class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">Director</span>
-                                            <span class="block text-sm text-gray-500 dark:text-neutral-500">Human
-                                                resources</span>
-                                        </div>
-                                    </td>
-                                    <td class="size-px whitespace-nowrap">
-                                        <div class="px-6 py-3">
-                                            <span
-                                                class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-                                                <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16"
-                                                    height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                </svg>
-                                                Active
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="size-px whitespace-nowrap">
-                                        <div class="px-6 py-3">
-                                            <div class="flex items-center gap-x-3">
-                                                <span class="text-xs text-gray-500 dark:text-neutral-500">1/5</span>
-                                                <div
-                                                    class="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700">
-                                                    <div class="flex flex-col justify-center overflow-hidden bg-gray-800 dark:bg-neutral-200"
-                                                        role="progressbar" style="width: 25%" aria-valuenow="25"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
+                                        </td>
+                                        <td class="h-px w-72 whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $transaction->fund->name }}</span>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="size-px whitespace-nowrap">
-                                        <div class="px-6 py-3">
-                                            <span class="text-sm text-gray-500 dark:text-neutral-500">28 Dec, 12:12</span>
-                                        </div>
-                                    </td>
-                                    <td class="size-px whitespace-nowrap">
-                                        <div class="px-6 py-1.5">
-                                            <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-                                                href="#">
-                                                Edit
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                <span class="block text-sm text-gray-800 dark:text-neutral-200">{{ Str::limit($transaction->detail, 50) }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                <span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium rounded-full {{ $transaction->type === 'income' ? 'bg-green-100 text-green-800 dark:bg-green-500/10 dark:text-green-500' : 'bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-500' }}">
+                                                    {{ ucfirst($transaction->type) }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                <span class="text-sm font-medium {{ $transaction->type === 'income' ? 'text-green-600' : 'text-red-600' }}">
+                                                    {{ $transaction->type === 'income' ? '+' : '-' }}Rp {{ number_format($transaction->amount, 0, ',', '.') }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-1.5 flex gap-x-2">
+                                                <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
+                                                    href="{{ route('transaction.show', $transaction) }}">
+                                                    View
+                                                </a>
+                                                <a class="inline-flex items-center gap-x-1 text-sm text-green-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-green-500"
+                                                    href="{{ route('transaction.edit', $transaction) }}">
+                                                    Edit
+                                                </a>
+                                                <form method="POST" action="{{ route('transaction.destroy', $transaction) }}" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                        onclick="return confirm('Are you sure you want to delete this transaction?')"
+                                                        class="inline-flex items-center gap-x-1 text-sm text-red-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-red-500">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-12 text-center">
+                                            <p class="text-gray-500 dark:text-neutral-500">No transactions found.</p>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                         <!-- End Table -->
 
                         <!-- Footer -->
+                        @if($transactions->hasPages())
                         <div
                             class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-neutral-400">
-                                    <span class="font-semibold text-gray-800 dark:text-neutral-200">12</span> results
+                                    <span class="font-semibold text-gray-800 dark:text-neutral-200">{{ $transactions->total() }}</span> results
                                 </p>
                             </div>
 
                             <div>
-                                <div class="inline-flex gap-x-2">
-                                    <button type="button"
-                                        class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
-                                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="m15 18-6-6 6-6" />
-                                        </svg>
-                                        Prev
-                                    </button>
-
-                                    <button type="button"
-                                        class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
-                                        Next
-                                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="m9 18 6-6-6-6" />
-                                        </svg>
-                                    </button>
-                                </div>
+                                {{ $transactions->links() }}
                             </div>
                         </div>
+                        @endif
                         <!-- End Footer -->
                     </div>
                 </div>
