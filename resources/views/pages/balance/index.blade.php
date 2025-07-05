@@ -146,55 +146,78 @@
         </div>
     </div>
 
-    <!-- Charts and Tables -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Chart Card -->
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-800 dark:border-neutral-700">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-                    Grafik Keuangan
-                </h3>
-                <p class="text-sm text-gray-600 dark:text-neutral-400">
-                    Perbandingan pemasukan dan pengeluaran
-                </p>
-            </div>
-            <div class="p-6">
-                <canvas id="balanceChart" width="400" height="200"></canvas>
-            </div>
-        </div>
+    <!-- Fund Summary Table - Full Width -->
+    <div class="mb-6">
 
-        <!-- Fund Summary -->
+        <!-- Fund Summary Table -->
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-800 dark:border-neutral-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-                    Ringkasan per Dana
+                    Detail Saldo per Dana
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-neutral-400">
-                    Saldo untuk setiap sumber dana
+                    Rincian pemasukan, pengeluaran, dan saldo untuk setiap dana pada {{ \Carbon\Carbon::create(request('year', date('Y')), request('month', date('n')))->format('F Y') }}
                 </p>
             </div>
-            <div class="p-6">
-                @if($fundBalances && count($fundBalances) > 0)
-                    <div class="space-y-3">
-                        @foreach($fundBalances as $fundBalance)
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg dark:bg-neutral-700">
-                            <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                    <thead class="bg-gray-50 dark:bg-neutral-800">
+                        <tr>
+                            <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">Nama Dana</th>
+                            <th class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">Pemasukan</th>
+                            <th class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">Pengeluaran</th>
+                            <th class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                        @forelse($fundBalances ?? [] as $fundBalance)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-neutral-700">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                                 {{ $fundBalance['name'] }}
-                            </span>
-                            <span class="text-sm font-semibold {{ $fundBalance['balance'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-green-600 dark:text-green-400">
+                                Rp {{ number_format($fundBalance['income'], 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 dark:text-red-400">
+                                Rp {{ number_format($fundBalance['expense'], 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-semibold {{ $fundBalance['balance'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
                                 Rp {{ number_format($fundBalance['balance'], 0, ',', '.') }}
-                            </span>
-                        </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center py-8">
-                        <svg class="w-12 h-12 text-gray-300 dark:text-neutral-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                        <p class="text-gray-500 dark:text-neutral-400">Tidak ada data dana tersedia</p>
-                    </div>
-                @endif
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-12 h-12 text-gray-300 dark:text-neutral-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                    <p class="text-gray-500 dark:text-neutral-400">Tidak ada data dana tersedia</p>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                        
+                        <!-- Total Row -->
+                        @if($fundBalances && count($fundBalances) > 0)
+                        <tr class="bg-gray-50 dark:bg-neutral-700/50 border-t-2 border-gray-300 dark:border-neutral-600">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-800 dark:text-neutral-200">
+                                TOTAL
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-green-600 dark:text-green-400">
+                                Rp {{ number_format($totalFundIncome ?? 0, 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-red-600 dark:text-red-400">
+                                Rp {{ number_format($totalFundExpense ?? 0, 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold {{ ($totalFundBalance ?? 0) >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                Rp {{ number_format($totalFundBalance ?? 0, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -232,16 +255,16 @@
                     @forelse($recentTransactions ?? [] as $transaction)
                     <tr class="hover:bg-gray-50 dark:hover:bg-neutral-700">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                            {{ $transaction->date->format('d M Y') }}
+                            {{ optional($transaction->date)->format('d M Y') ?? 'N/A' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                            {{ $transaction->fund->name }}
+                            {{ optional($transaction->fund)->name ?? 'N/A' }}
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
-                            {{ \Illuminate\Support\Str::limit($transaction->detail, 50) }}
+                            {{ \Illuminate\Support\Str::limit($transaction->detail ?? 'N/A', 50) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($transaction->type === 'income')
+                            @if(optional($transaction)->type === 'income')
                                 <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
                                     Pemasukan
                                 </span>
@@ -251,8 +274,8 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium {{ $transaction->type === 'income' ? 'text-green-600' : 'text-red-600' }}">
-                            {{ $transaction->type === 'income' ? '+' : '-' }}Rp {{ number_format($transaction->amount, 0, ',', '.') }}
+                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium {{ optional($transaction)->type === 'income' ? 'text-green-600' : 'text-red-600' }}">
+                            {{ optional($transaction)->type === 'income' ? '+' : '-' }}Rp {{ number_format($transaction->amount ?? 0, 0, ',', '.') }}
                         </td>
                     </tr>
                     @empty
@@ -274,34 +297,4 @@
     </div>
 </div>
 
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-// Balance Chart
-const ctx = document.getElementById('balanceChart').getContext('2d');
-const balanceChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Pemasukan', 'Pengeluaran'],
-        datasets: [{
-            data: [{{ $totalIncome ?? 0 }}, {{ $totalExpense ?? 0 }}],
-            backgroundColor: [
-                '#10b981', // green-500
-                '#ef4444'  // red-500
-            ],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-            }
-        }
-    }
-});
-</script>
-@endpush
 @endsection

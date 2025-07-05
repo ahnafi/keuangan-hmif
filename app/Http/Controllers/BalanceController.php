@@ -34,25 +34,30 @@ class BalanceController extends Controller
         $balance = $totalIncome - $totalExpense;
         $totalTransactions = $transactions->count();
 
-        // Get recent transactions (limit to 10)
-        $recentTransactions = $transactions->take(10);
+        // Get recent transactions (limit to 10) - ensure we have valid data
+        $recentTransactions = $transactions->filter(function($transaction) {
+            return $transaction && $transaction->fund && $transaction->date;
+        })->take(10);
 
-        // Get fund balances
+        // Get fund balances - show all funds
         $fundBalances = $funds->map(function ($fund) use ($transactions) {
             $fundTransactions = $transactions->where('fund_id', $fund->id);
             $income = $fundTransactions->where('type', 'income')->sum('amount');
             $expense = $fundTransactions->where('type', 'expense')->sum('amount');
             
             return [
+                'id' => $fund->id,
                 'name' => $fund->name,
                 'income' => $income,
                 'expense' => $expense,
                 'balance' => $income - $expense
             ];
-        })->filter(function ($fund) {
-            // Only show funds that have transactions
-            return $fund['income'] > 0 || $fund['expense'] > 0;
-        })->values();
+        });
+
+        // Calculate totals for fund table
+        $totalFundIncome = $fundBalances->sum('income');
+        $totalFundExpense = $fundBalances->sum('expense');
+        $totalFundBalance = $totalFundIncome - $totalFundExpense;
 
         return view('pages.balance.index', compact(
             'funds',
@@ -63,6 +68,9 @@ class BalanceController extends Controller
             'balance',
             'totalTransactions',
             'fundBalances',
+            'totalFundIncome',
+            'totalFundExpense', 
+            'totalFundBalance',
             'recentTransactions'
         ));
     }

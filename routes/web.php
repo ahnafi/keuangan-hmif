@@ -30,5 +30,17 @@ Route::middleware(["auth", "role:bendahara"])->group(function () {
     Route::get("/balance", [BalanceController::class, "index"])->name("balance.index");
 });
 
+Route::get('/test-data', function() {
+    $funds = \App\Models\Fund::all();
+    $transactions = \App\Models\Transaction::with('fund')->get();
+    
+    return response()->json([
+        'funds_count' => $funds->count(),
+        'transactions_count' => $transactions->count(),
+        'funds' => $funds->toArray(),
+        'transactions' => $transactions->toArray()
+    ]);
+});
+
 // route untuk divisi yang mempunyai kas
 // DivisionCashAccess::
