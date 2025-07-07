@@ -27,7 +27,9 @@ class AdministratorController extends Controller
             'division_id' => 'required|exists:divisions,id',
         ]);
 
-        Administrator::create($request->only(['name', 'division_id']));
+        $admin = Administrator::create($request->only(['name', 'division_id']));
+        $admin->cash()->create();
+        $admin->deposit()->create();
 
         return redirect()->route('administrator.index')->with('success', 'Pengurus berhasil ditambahkan.');
     }

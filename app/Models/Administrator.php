@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,17 +30,17 @@ class Administrator extends Model
     /**
      * Get deposits for this administrator
      */
-    public function deposits(): HasMany
+    public function deposit(): HasOne
     {
-        return $this->hasMany(Deposit::class);
+        return $this->hasOne(Deposit::class);
     }
 
     /**
      * Get cashes for this administrator
      */
-    public function cashes(): HasMany
+    public function cash(): HasOne
     {
-        return $this->hasMany(Cash::class);
+        return $this->hasOne(Cash::class);
     }
 
     /**

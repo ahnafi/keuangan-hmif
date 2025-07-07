@@ -107,8 +107,10 @@ class DivisionSeeder extends Seeder
         ];
 
         // Buat administrators
-        foreach ($administrators as $admin) {
-            \App\Models\Administrator::create($admin);
+        foreach ($administrators as $adminData) {
+            $admin = \App\Models\Administrator::create($adminData);
+            $admin->cash()->create();
+            $admin->deposit()->create();
         }
     }
 }
