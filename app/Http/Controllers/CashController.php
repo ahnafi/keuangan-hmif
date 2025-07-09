@@ -40,9 +40,9 @@ class CashController extends Controller
     public function store(Request $request)
     {
         // Check if we have an administrator_id to determine the redirect location
-        $isFromHistoryPage = $request->has('administrator_id') && $request->header('referer') && 
-                            str_contains($request->header('referer'), '/history');
-        
+        $isFromHistoryPage = $request->has('administrator_id') && $request->header('referer') &&
+            str_contains($request->header('referer'), '/history');
+
         // Validate the request
         try {
             $validated = $request->validate([
@@ -93,7 +93,7 @@ class CashController extends Controller
                     ->withInput()
                     ->with('error', 'Kas bulan ' . ucfirst($request->month) . ' untuk pengurus ini sudah dibayar sebelumnya.');
             }
-            
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Kas bulan ' . ucfirst($request->month) . ' untuk pengurus ini sudah dibayar sebelumnya.');
@@ -214,13 +214,62 @@ class CashController extends Controller
 
     public function transaction()
     {
-        $transactions = Cash::with([
-            'administrator.division',
-            'funds' => function ($query) {
-                $query->withPivot(['date', 'month', 'penalty']);
-            }
-        ])->paginate(10);
+        // Get all transactions by querying the Fund model with cash relationships
+        $transactions = Fund::whereHas('cashes')
+            ->with(['cashes' => function ($query) {
+                $query->with('administrator.division')
+                      ->withPivot('date', 'month', 'penalty', 'cash', 'amount');
+            }])
+            ->get()
+            ->flatMap(function ($fund) {
+                return $fund->cashes->map(function ($cash) use ($fund) {
+                    // Create a new object that combines fund and cash data
+                    $transaction = new \stdClass();
+                    $transaction->fund_name = $fund->name;
+                    $transaction->administrator = $cash->administrator;
+                    $transaction->pivot = $cash->pivot;
+                    return $transaction;
+                });
+            });
 
-        return response()->json($transactions);
+        // Paginate manually
+        $page = request()->get('page', 1);
+        $perPage = 15;
+        $total = $transactions->count();
+        $transactions = $transactions->slice(($page - 1) * $perPage, $perPage)->values();
+        
+        $paginatedTransactions = new \Illuminate\Pagination\LengthAwarePaginator(
+            $transactions,
+            $total,
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'pageName' => 'page']
+        );
+
+        // Calculate total amounts for all transactions
+        $totalCash = 0;
+        $totalPenalty = 0;
+        $totalAmount = 0;
+
+        // Get all cash records (not paginated) for total calculation
+        $allCash = Cash::with(['funds' => function ($query) {
+            $query->withPivot(['penalty', 'cash', 'amount']);
+        }])->get();
+
+        foreach ($allCash as $cash) {
+            foreach ($cash->funds as $fund) {
+                $totalCash += $fund->pivot->cash;
+                $totalPenalty += $fund->pivot->penalty;
+                $totalAmount += $fund->pivot->amount;
+            }
+        }
+
+        $totals = [
+            'cash' => $totalCash,
+            'penalty' => $totalPenalty,
+            'amount' => $totalAmount,
+        ];
+
+        return view("pages.cash.transaction", compact('paginatedTransactions', 'totals'))->with('transactions', $paginatedTransactions);
     }
 }
