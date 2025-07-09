@@ -18,6 +18,8 @@ return new class extends Migration
             $table->date("date");
             $table->string("month");
             $table->integer("penalty");
+            $table->integer("cash");
+            $table->integer("amount");
             $table->timestamps();
             $table->softDeletes();
         });

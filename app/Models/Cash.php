@@ -39,7 +39,7 @@ class Cash extends Model
     public function funds(): BelongsToMany
     {
         return $this->belongsToMany(Fund::class, 'cash_fund')
-            ->withPivot('date', 'month', 'penalty')
+            ->withPivot('date', 'month', 'penalty', 'cash', 'amount')
             ->withTimestamps();
     }
 }

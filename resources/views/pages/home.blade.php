@@ -76,15 +76,15 @@
             <path d="M5 12h14" />
             <path d="M12 5v14" />
             </svg>
-            Tambah Transaksi
+            Bayar Kas
           </a>
-          <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+          <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700"
             href="{{ route('cash.transaction.history') }}">
             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
             </svg>
             Riwayat
           </a>
@@ -248,7 +248,7 @@
         <div class="px-6 py-1.5">
         <div class="flex items-center gap-x-2">
           <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-          href="{{ route('cash.edit', $cash) }}" title="Edit kas">
+          href="{{ route('cash.history', $cash) }}" title="Edit kas">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -338,7 +338,7 @@
           @role("bendahara")
           <td class="size-px whitespace-nowrap">
             <div class="px-6 py-1.5">
-            <span class="text-xs text-gray-500 dark:text-neutral-400">-</span>
+            <span class="text-xs text-gray-500 dark:text-neutral-400"></span>
             </div>
           </td>
           @endrole
@@ -361,7 +361,7 @@
           @role("bendahara")
           <td class="size-px whitespace-nowrap">
             <div class="px-6 py-1.5">
-            <span class="text-xs text-gray-500 dark:text-neutral-400">-</span>
+            <span class="text-xs text-gray-500 dark:text-neutral-400"></span>
             </div>
           </td>
           @endrole
@@ -380,7 +380,7 @@
         <div>
           <p class="text-sm text-gray-600 dark:text-neutral-400">
           <span class="font-semibold text-gray-800 dark:text-neutral-200">{{ $cashs->count() }}</span>
-          administrator
+          Pengurus
           • Total Kas: <span class="font-semibold text-blue-600 dark:text-blue-400">Rp
             {{ number_format($grandTotal ?? 0, 0, ',', '.') }}</span>
           </p>

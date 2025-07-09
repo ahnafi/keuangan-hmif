@@ -31,7 +31,7 @@ class Fund extends Model
     public function cashes(): BelongsToMany
     {
         return $this->belongsToMany(Cash::class, 'cash_fund')
-            ->withPivot('date', 'month', 'penalty')
+            ->withPivot('date', 'month', 'penalty', 'cash', 'amount')
             ->withTimestamps();
     }
 
