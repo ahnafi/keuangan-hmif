@@ -83,8 +83,8 @@
             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12,6 12,12 16,14"/>
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12,6 12,12 16,14" />
             </svg>
             Riwayat
           </a>
@@ -181,7 +181,7 @@
           {{ $cash->administrator->name }}
           </span>
           <span class="block text-sm text-gray-500 dark:text-neutral-500">
-          {{ $cash->administrator->division->name }}
+          {{ \Illuminate\Support\Str::limit($cash->administrator->division->name, 20) }}
           </span>
           </div>
         </div>
@@ -385,30 +385,6 @@
             {{ number_format($grandTotal ?? 0, 0, ',', '.') }}</span>
           </p>
         </div>
-
-        {{-- <div>
-          <div class="inline-flex gap-x-2">
-          <button type="button"
-            class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
-            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="m15 18-6-6 6-6" />
-            </svg>
-            Prev
-          </button>
-
-          <button type="button"
-            class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
-            Next
-            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6" />
-            </svg>
-          </button>
-          </div>
-        </div> --}}
         </div>
         <!-- End Footer -->
       </div>

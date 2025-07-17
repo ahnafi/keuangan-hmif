@@ -24,6 +24,11 @@ class Deposit extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $appends = ['total_amount'];
+
+    // Define default relationships to always load
+    protected $with = [];
+
     /**
      * Get the administrator that owns the deposit
      */
@@ -48,5 +53,37 @@ class Deposit extends Model
     public function depositPenalties(): HasMany
     {
         return $this->hasMany(DepositPenalty::class);
+    }
+
+    /**
+     * Get the total amount from pivot funds
+     */
+    public function getTotalAmountAttribute(): int
+    {
+        return $this->funds->sum('pivot.amount');
+    }
+
+    /**
+     * Scope to load all necessary relationships
+     */
+    public function scopeWithFullData($query)
+    {
+        return $query->with([
+            'administrator.division',
+            'funds' => function ($query) {
+                $query->withPivot('date', 'amount');
+            }
+        ])->withCount('funds');
+    }
+
+    /**
+     * Scope to load deposit penalties with relationships
+     */
+    public function scopeWithPenalties($query)
+    {
+        return $query->with([
+            'depositPenalties',
+            'administrator.division'
+        ]);
     }
 }
