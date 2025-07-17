@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/", [CashController::class, "index"])->name("home");
 Route::get("/deposit", [DepositController::class, "index"])->name("deposit.index");
-Route::get('/deposit/history', [DepositController::class, "history"])->name('deposit.history');
+Route::get('/deposit/history', [DepositPenaltyController::class, "index"])->name('deposit.history');
 
 Route::middleware("guest")->group(function () {
     Route::get("/login", [AuthController::class, "showLoginForm"])->name("login");

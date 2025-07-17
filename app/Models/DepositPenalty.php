@@ -25,6 +25,23 @@ class DepositPenalty extends Model
     ];
 
     /**
+     * Get human-readable penalty detail description
+     */
+    public function getDetailDescriptionAttribute(): string
+    {
+        $descriptions = [
+            'plenary_meeting' => 'Tidak mengikuti rapat pleno / Terlambat mengikuti rapat pleno',
+            'jacket_day' => 'Tidak menggunakan jahim ketika jahim day',
+            'graduation_ceremony' => 'Tidak mengikuti wisuda offline',
+            'secretariat_maintenance' => 'Tidak mengikuti piket pesek',
+            'work_program' => 'Tidak bertanggung jawab dalam menjalankan proker',
+            'other' => 'Lainnya'
+        ];
+
+        return $descriptions[$this->detail] ?? $this->detail;
+    }
+
+    /**
      * Get the deposit that owns the deposit penalty
      */
     public function deposit(): BelongsTo

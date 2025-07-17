@@ -23,40 +23,6 @@ class DepositController extends Controller
         return view("pages.deposit", compact("deposits", "funds", "administrators"));
     }
 
-    public function history()
-    {
-        $penalties = DepositPenalty::with([
-            'deposit.administrator.division'
-        ])->paginate(15);
-
-        // Get pivot data with pagination using direct DB query
-        $histories = DB::table('deposit_fund')
-            ->join('deposits', 'deposit_fund.deposit_id', '=', 'deposits.id')
-            ->join('funds', 'deposit_fund.fund_id', '=', 'funds.id')
-            ->join('administrators', 'deposits.administrator_id', '=', 'administrators.id')
-            ->join('divisions', 'administrators.division_id', '=', 'divisions.id')
-            ->select([
-                'deposit_fund.id',
-                'deposit_fund.deposit_id',
-                'deposit_fund.fund_id',
-                'deposit_fund.date',
-                'deposit_fund.amount',
-                'deposit_fund.created_at',
-                'deposit_fund.updated_at',
-                'funds.name as fund_name',
-                'administrators.name as administrator_name',
-                'divisions.name as division_name'
-            ])
-            ->orderBy('deposit_fund.created_at', 'desc')
-            ->paginate(15);
-
-        return response()->json([
-            "history" => $histories,
-            "penalty" => $penalties
-        ]);
-        // return view("pages.deposit-history", compact("histories"));
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([

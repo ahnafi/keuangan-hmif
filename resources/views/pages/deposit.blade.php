@@ -117,6 +117,7 @@
                                         </svg>
                                         Denda
                                     </button>
+                                    @endrole
                                     <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700"
                                         href="{{ route("deposit.history") }}">
                                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -127,7 +128,6 @@
                                         </svg>
                                         Riwayat Deposit
                                     </a>
-                                    @endrole
                                 </div>
                             </div>
                         </div>
@@ -607,7 +607,7 @@
                                 <select name="detail" id="penalty_type" required
                                     class="w-full px-3 py-2 border @error('penalty') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-700 dark:border-neutral-600 dark:text-neutral-200">
                                     <option value="">Pilih Jenis Denda</option>
-                                    <option value="plenary_meeting" {{ old('penalty') == 'plenary_meeting' ? 'selected' : '' }}>Terlambat atauTidak mengikuti rapat pleno</option>
+                                    <option value="plenary_meeting" {{ old('penalty') == 'plenary_meeting' ? 'selected' : '' }}>Terlambat atau Tidak mengikuti rapat pleno</option>
                                     <option value="jacket_day" {{ old('penalty') == 'jacket_day' ? 'selected' : '' }}>Tidak menggunakan jahim ketika jahim day</option>
                                     <option value="graduation_ceremony" {{ old('penalty') == 'graduation_ceremony' ? 'selected' : '' }}>Tidak mengikuti wisuda offline</option>
                                     <option value="secretariat_maintenance" {{ old('penalty') == 'secretariat_maintenance' ? 'selected' : '' }}>Tidak mengikuti piket pesek</option>
@@ -618,7 +618,6 @@
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
                             </div>
-
 
                             <!-- Date -->
                             <div>
