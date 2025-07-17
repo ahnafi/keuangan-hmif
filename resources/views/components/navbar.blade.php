@@ -239,6 +239,18 @@
               Transaksi Kas
             </a>
           </li>
+          <li>
+            <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 {{ Route::is('deposit.history') ? 'bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-white' : 'text-gray-800 dark:text-neutral-200' }}"
+              href="{{ route("deposit.history") }}">
+              <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-10 5L2 7"/>
+                <path d="M8 14h8M8 10h8"/>
+              </svg>
+              Histori Denda Deposit
+            </a>
+          </li>
         </ul>
         @endrole
       </nav>
