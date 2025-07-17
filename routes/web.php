@@ -44,8 +44,8 @@ Route::middleware(["auth", "role:bendahara"])->group(function () {
     Route::get("/cash/transaction", [CashController::class, "transaction"])->name("cash.transaction.history");
     // deposit
     Route::post('/deposit/store', [DepositController::class, "store"])->name("deposit.store");
-    Route::put('/deposit/update', [DepositController::class, "update"])->name("deposit.update");
-    Route::delete('/deposit/destroy', [DepositController::class, "destroy"])->name("deposit.destroy");
+    Route::put('/deposit/{deposit}/fund/{fundId}', [DepositController::class, "update"])->name("deposit.update");
+    Route::delete('/deposit/{deposit}/fund/{fundId}', [DepositController::class, "destroy"])->name("deposit.destroy");
     Route::get('/deposit/{deposit}/manage', [DepositController::class, "manage"])->name("deposit.manage");
     Route::post('/deposit/penalty', [DepositPenaltyController::class, "store"])->name("deposit.penalty.store");
     Route::put('/deposit/{deposit}/penalty/{depositPenalty}', [DepositPenaltyController::class, "update"])->name("deposit.penalty.update");

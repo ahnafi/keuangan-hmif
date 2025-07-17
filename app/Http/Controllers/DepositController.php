@@ -71,14 +71,42 @@ class DepositController extends Controller
         }
     }
 
-    public function update()
+    public function update(Request $request, Deposit $deposit, $fundId)
     {
+        $validated = $request->validate([
+            "date" => "required|date",
+            "amount" => "required|numeric|min:1",
+        ], [
+            'date.required' => 'Tanggal harus diisi.',
+            'date.date' => 'Format tanggal tidak valid.',
+            'amount.required' => 'Jumlah deposit harus diisi.',
+            'amount.numeric' => 'Jumlah deposit harus berupa angka.',
+            'amount.min' => 'Jumlah deposit minimal adalah 1.',
+        ]);
 
+        try {
+            // Update existing pivot record
+            $deposit->funds()->updateExistingPivot($fundId, [
+                "date" => $validated["date"],
+                "amount" => $validated["amount"]
+            ]);
+
+            return back()->with("success", "Deposit berhasil diperbarui");
+        } catch (\Exception $err) {
+            return back()->with("error", "Deposit gagal diperbarui: " . $err->getMessage());
+        }
     }
 
-    public function destroy()
+    public function destroy(Deposit $deposit, $fundId)
     {
+        try {
+            // Remove the pivot record
+            $deposit->funds()->detach($fundId);
 
+            return back()->with("success", "Deposit berhasil dihapus");
+        } catch (\Exception $err) {
+            return back()->with("error", "Deposit gagal dihapus: " . $err->getMessage());
+        }
     }
 
     // manage administrator deposit and penalty
@@ -92,15 +120,11 @@ class DepositController extends Controller
             }
         ]);
 
-        $penalties = $deposit->depositPenalties()->paginate(15);
+        $penalties = $deposit->depositPenalties()->paginate(8);
         $depositFunds = $deposit->funds;
+        $funds = Fund::select('id', 'name')->get();
 
-        return response()->json([
-            'deposit' => $deposit,
-            'penalties' => $penalties,
-            'depositFunds' => $depositFunds
-        ]);
-        // return view('pages.deposit-manage', compact('deposit', 'penalties', 'depositFunds'));
+        return view('pages.deposit.manage', compact('deposit', 'penalties', 'depositFunds', 'funds'));
     }
 
 }
