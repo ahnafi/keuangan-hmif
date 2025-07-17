@@ -20,7 +20,7 @@ class DepositController extends Controller
         $funds = Fund::select('id', 'name')->get();
         $administrators = Administrator::select("id", "name")->get();
 
-        return view("pages.deposit", compact("deposits", "funds","administrators"));
+        return view("pages.deposit", compact("deposits", "funds", "administrators"));
     }
 
     public function history()
@@ -137,42 +137,4 @@ class DepositController extends Controller
         // return view('pages.deposit-manage', compact('deposit', 'penalties', 'depositFunds'));
     }
 
-    public function storePenalty(Request $request)
-    {
-        $validated = $request->validate([
-            'deposit_id' => 'required|exists:deposits,id',
-            'amount' => 'required|numeric|min:1',
-            'detail' => 'required|string|max:255',
-            'date' => 'required|date',
-        ], [
-            'deposit_id.required' => 'Deposit harus dipilih.',
-            'deposit_id.exists' => 'Deposit yang dipilih tidak valid.',
-            'amount.required' => 'Jumlah denda harus diisi.',
-            'amount.numeric' => 'Jumlah denda harus berupa angka.',
-            'amount.min' => 'Jumlah denda minimal adalah 1.',
-            'detail.required' => 'Detail denda harus diisi.',
-            'detail.string' => 'Detail denda harus berupa teks.',
-            'detail.max' => 'Detail denda maksimal 255 karakter.',
-            'date.required' => 'Tanggal denda harus diisi.',
-            'date.date' => 'Format tanggal tidak valid.',
-        ]);
-
-        try {
-            DepositPenalty::create($validated);
-
-            return back()->with("success", "Denda deposit berhasil ditambahkan");
-        } catch (\Exception $err) {
-            return back()->with("error", "Denda deposit gagal ditambahkan: " . $err->getMessage());
-        }
-    }
-
-    public function updatePenalty()
-    {
-
-    }
-
-    public function destroyPenalty()
-    {
-
-    }
 }

@@ -5,9 +5,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\DepositPenaltyController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\FundController;
 use App\Http\Controllers\TransactionController;
+use App\Models\DepositPenalty;
 use App\Models\DivisionCashAccess;
 use Illuminate\Support\Facades\Route;
 
@@ -45,9 +47,9 @@ Route::middleware(["auth", "role:bendahara"])->group(function () {
     Route::put('/deposit/update', [DepositController::class, "update"])->name("deposit.update");
     Route::delete('/deposit/destroy', [DepositController::class, "destroy"])->name("deposit.destroy");
     Route::get('/deposit/{deposit}/manage', [DepositController::class, "manage"])->name("deposit.manage");
-    Route::post('/deposit/penalty', [DepositController::class, "storePenalty"])->name("deposit.penalty.store");
-    Route::put('/deposit/{deposit}/penalty/{depositPenalty}', [DepositController::class, "updatePenalty"])->name("deposit.penalty.update");
-    Route::delete('/deposit/{deposit}/penalty/{depositPenalty}', [DepositController::class, "destroyPenalty"])->name("deposit.penalty.destroy");
+    Route::post('/deposit/penalty', [DepositPenaltyController::class, "store"])->name("deposit.penalty.store");
+    Route::put('/deposit/{deposit}/penalty/{depositPenalty}', [DepositPenaltyController::class, "update"])->name("deposit.penalty.update");
+    Route::delete('/deposit/{deposit}/penalty/{depositPenalty}', [DepositPenaltyController::class, "destroy"])->name("deposit.penalty.destroy");
 });
 
 // route untuk divisi yang mempunyai kas

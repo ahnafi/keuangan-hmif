@@ -108,7 +108,7 @@
                                     </button>
                                     <button
                                         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
-                                        data-hs-overlay="#add-deposit-modal">
+                                        data-hs-overlay="#penalty-deposit-modal">
                                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
                                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -233,107 +233,72 @@
 
                             <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                                 @foreach ($deposits as $deposit)
-                                                            <tr class="hover:bg-gray-50 dark:hover:bg-neutral-700">
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="ps-6 py-3">
-                                                                        <div class="flex items-center gap-x-3">
-                                                                            <div class="grow">
-                                                                                <span
-                                                                                    class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                                                                                    {{ $deposit->administrator->name }}
-                                                                                </span>
-                                                                                <span class="block text-sm text-gray-500 dark:text-neutral-500">
-                                                                                    {{ \Illuminate\Support\Str::limit($deposit->administrator->division->name, 20) }}
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->plenary_meeting ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->jacket_day ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->graduation_ceremony ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->secretariat_maintenance ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->work_program ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->other ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format(
-                                        ($deposit->plenary_meeting ?? 0) +
-                                        ($deposit->jacket_day ?? 0) +
-                                        ($deposit->graduation_ceremony ?? 0) +
-                                        ($deposit->secretariat_maintenance ?? 0) +
-                                        ($deposit->work_program ?? 0) +
-                                        ($deposit->other ?? 0),
-                                        0,
-                                        ',',
-                                        '.'
-                                    ) }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-3">
-                                                                        <span class="text-sm text-gray-500 dark:text-neutral-500">
-                                                                            Rp {{ number_format($deposit->total_amount ?? 0, 0, ',', '.') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                @role("bendahara")
-                                                                <td class="size-px whitespace-nowrap">
-                                                                    <div class="px-6 py-1.5">
-                                                                        <div class="flex items-center gap-x-2">
-                                                                            <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-                                                                                href="{{ route('deposit.manage', $deposit) }}" title="Kelola Deposit">
-                                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                                                    viewBox="0 0 24 24">
-                                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                        stroke-width="2"
-                                                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                                                </svg>
-                                                                                Kelola
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                @endrole
-                                                            </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-neutral-700">
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="ps-6 py-3">
+                                            <div class="flex items-center gap-x-3">
+                                                <div class="grow">
+                                                    <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $deposit->administrator->name }}</span>
+                                                    <span class="block text-sm text-gray-500 dark:text-neutral-500">{{ \Illuminate\Support\Str::limit($deposit->administrator->division->name, 20) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->plenary_meeting ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->jacket_day ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->graduation_ceremony ?? 0, 0, ',', '.') }}</span>                            
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->secretariat_maintenance ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->work_program ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->other ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->total_penalty_amount,0,',','.') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            <span class="text-sm text-gray-500 dark:text-neutral-500">Rp {{ number_format($deposit->total_amount - $deposit->total_penalty_amount ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                    @role("bendahara")
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-1.5">
+                                            <div class="flex items-center gap-x-2">
+                                                <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500" href="{{ route('deposit.manage', $deposit) }}" title="Kelola Deposit">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Kelola
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @endrole
+                                </tr>
                                 @endforeach
 
                                 <!-- Total Row -->
@@ -585,9 +550,140 @@
         </div>
     </div>
 
+    <div id="penalty-deposit-modal"
+        class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none"
+        role="dialog" tabindex="-1" aria-labelledby="penalty-deposit-modal-label">
+        <div
+            class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
+            <div
+                class="w-full flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center py-3 px-4 border-b border-gray-200 dark:border-neutral-700">
+                    <h3 id="penalty-deposit-modal-label" class="font-bold text-gray-800 dark:text-white">
+                        Tambah Denda Deposit
+                    </h3>
+                    <button type="button"
+                        class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
+                        aria-label="Close" data-hs-overlay="#penalty-deposit-modal">
+                        <span class="sr-only">Close</span>
+                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-4 overflow-y-auto">
+                    <form id="penaltyForm" method="POST" action="{{ route('deposit.penalty.store') }}">
+                        @csrf
+
+                        <div class="space-y-4">
+                            <!-- Administrator Selection -->
+                            <div>
+                                <label for="penalty_administrator_id"
+                                    class="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
+                                    Pengurus <span class="text-red-500">*</span>
+                                </label>
+                                <select name="administrator_id" id="penalty_administrator_id" required
+                                    class="w-full px-3 py-2 border @error('administrator_id') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-700 dark:border-neutral-600 dark:text-neutral-200">
+                                    <option value="">Pilih Pengurus</option>
+                                    @foreach($administrators as $admin)
+                                        <option value="{{ $admin->id }}" {{ old('administrator_id') == $admin->id ? 'selected' : '' }}>{{ $admin->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('administrator_id')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <!-- Fund Selection -->
+                            <div>
+                                <label for="penalty_type"
+                                    class="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
+                                    Jenis denda <span class="text-red-500">*</span>
+                                </label>
+                                <select name="detail" id="penalty_type" required
+                                    class="w-full px-3 py-2 border @error('penalty') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-700 dark:border-neutral-600 dark:text-neutral-200">
+                                    <option value="">Pilih Jenis Denda</option>
+                                    <option value="plenary_meeting" {{ old('penalty') == 'plenary_meeting' ? 'selected' : '' }}>Terlambat atauTidak mengikuti rapat pleno</option>
+                                    <option value="jacket_day" {{ old('penalty') == 'jacket_day' ? 'selected' : '' }}>Tidak menggunakan jahim ketika jahim day</option>
+                                    <option value="graduation_ceremony" {{ old('penalty') == 'graduation_ceremony' ? 'selected' : '' }}>Tidak mengikuti wisuda offline</option>
+                                    <option value="secretariat_maintenance" {{ old('penalty') == 'secretariat_maintenance' ? 'selected' : '' }}>Tidak mengikuti piket pesek</option>
+                                    <option value="work_program" {{ old('penalty') == 'work_program' ? 'selected' : '' }}>Tidak bertanggung jawab dalam menjalankan proker</option>
+                                    <option value="other" {{ old('penalty') == 'other' ? 'selected' : '' }}>Lainnya</option>
+                                </select>
+                                @error('penalty')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+
+                            <!-- Date -->
+                            <div>
+                                <label for="penalty_date"
+                                    class="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
+                                    Tanggal <span class="text-red-500">*</span>
+                                </label>
+                                <input type="date" name="date" id="penalty_date" required value="{{ old('date', date('Y-m-d')) }}"
+                                    class="w-full px-3 py-2 border @error('date') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-700 dark:border-neutral-600 dark:text-neutral-200">
+                                @error('date')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Cash Amount -->
+                            <div>
+                                <label for="penalty_amount"
+                                    class="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
+                                    Jumlah Denda <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">Rp</span>
+                                    <input type="number" name="amount" id="penalty_amount" min="0" value="{{ old('amount', 0) }}" required
+                                        class="w-full pl-8 pr-3 py-2 border @error('amount') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-700 dark:border-neutral-600 dark:text-neutral-200"
+                                        placeholder="0">
+                                </div>
+                                @error('amount')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Hidden deposit_id field (will be populated via JavaScript) -->
+                            <input type="hidden" name="deposit_id" id="penalty_deposit_id">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div
+                    class="flex justify-end items-center gap-x-2 py-3 px-4 border-t border-gray-200 dark:border-neutral-700">
+                    <button type="button"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                        data-hs-overlay="#penalty-deposit-modal">
+                        Batal
+                    </button>
+                    <button type="button" onclick="addPenalty()"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                        Simpan Denda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function addDeposit(){
             document.getElementById("addForm").submit()
+        }
+
+        function addPenalty(){
+            document.getElementById("penaltyForm").submit()
         }
     </script>
 
